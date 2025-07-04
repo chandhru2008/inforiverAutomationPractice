@@ -8,17 +8,21 @@ setCommonPlugins();
 
 /** @type {CodeceptJS.MainConfig} */
 exports.config = {
-  tests: './test/**/*_test.js',
+  tests: './tests/**/*_test.js',
   output: './output',
   helpers: {
     Playwright: {
+      waitForNavigation: "networkidle0",
+      waitForTimeout: 50000,
+      getPageTimeout: 900000,
+      waitForAction: 1000,
       browser: 'chromium',
       url: 'https://inforiverwebtest-premium.azurewebsites.net/?csvLocation=Sanity.csv&config=Sanity.json&URLLoad=true',
       show: true
     }
   },
   include: {
-    I: './steps_file.js'
+    I: './steps/steps_file.js'
   },
   plugins: {
     AssertWrapper: {
