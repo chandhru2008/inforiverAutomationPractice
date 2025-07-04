@@ -10,9 +10,9 @@ Scenario('Change bgcolor to user definded color', async ({ I }) => {
     const cssValidation = {
         property: 'background-color',
         regionName: region,
-        expectedValue: 'rgb(232, 48, 48)',
-      };
-      
+        expectedValue: fillColor
+    };
+
     await I.amOnPage('/');
     await tableRowSelector.selectRow(region);
     await cellColorManager.applyColorToRow(fillColor);
