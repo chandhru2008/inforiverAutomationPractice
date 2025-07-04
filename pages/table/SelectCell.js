@@ -38,26 +38,24 @@ const tableRowSelector = {
             assert.equal(actualValue, hexa.hexToRgb(cssValidation.expectedValue), ` Mismatch in '${cssValidation.property}' at cell ${i}: Expected ${hexa.hexToRgb(cssValidation.expectedValue)}, Found ${actualValue}`);
             console.log(actualValue, hexa.hexToRgb(cssValidation.expectedValue), cssValidation.property);
         }
+
     },
 
+    async validateCellTextProperty(cssValidation) {
+        const rowFullId = await I.grabAttributeFrom(this.locators.getRowByRegion(cssValidation.regionName), 'id');
+        const rowId = rowFullId.split('_')[0];
+        const cellXPath = this.locators.cellXPath(rowId);
+        const totalCells = await I.grabNumberOfVisibleElements(cellXPath);
+        console.log("totalCells", totalCells);
 
-
-    // async validateTheColorApply(color, region, colorvalue) {
-    //     const rowFullId = await I.grabAttributeFrom(this.locators.getRowByRegion(region), 'id');
-    //     console.log("rowFullId", rowFullId);
-
-    //     const rowId = rowFullId.split('_')[0];
-    //     console.log("rowId", rowId)
-    //     const cellXpath = this.locators.cellXpath(rowId);
-    //     const count = await I.grabNumberOfVisibleElements(cellXpath)
-    //     for (let i = 1; i <= count; i++) {
-    //         const eachCell = `(${cellXpath})[${i}]`;
-    //         const bgColor = await I.grabCssPropertyFrom(eachCell, color);
-    //         console.log(color, region, colorvalue)
-    //         assert.ok(colorvalue === bgColor, "color is mismatching");
-    //         console.log(color, region, colorvalue)
-    //     }
-    // }
+        for (let i = 1; i <= totalCells; i++) {
+             const currentCell = `(${cellXPath})[${i}]//span`;
+            const actualValue = await I.grabCssPropertyFrom(currentCell, cssValidation.property);
+            console.log("actualValue", actualValue);
+            assert.equal(actualValue, cssValidation.expectedValue, ` Mismatch in '${cssValidation.property}' at cell ${i}: Expected ${cssValidation.expectedValue}, Found ${actualValue}`);
+            console.log(actualValue,cssValidation.expectedValue, cssValidation.property);
+        }
+    }
 
 };
 
