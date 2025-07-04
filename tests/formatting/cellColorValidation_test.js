@@ -1,15 +1,23 @@
 Feature('Changing the background color');
 const tableRowSelector = require('../../pages/table/SelectCell');
 
-const cellColorManager=require('../../pages/styles/CellColor');
+const cellColorManager = require('../../pages/styles/CellColor');
 
 
 Scenario('Change bgcolor to user definded color', async ({ I }) => {
     let region = 'USA';
+    let fillColor = '#e83030';
+    const cssValidation = {
+        property: 'background-color',
+        regionName: region,
+        expectedValue: 'rgb(232, 48, 48)',
+      };
+      
     await I.amOnPage('/');
     await tableRowSelector.selectRow(region);
-    await cellColorManager.applyColorToRow();
-     I.wait(4)
+    await cellColorManager.applyColorToRow(fillColor);
+    await tableRowSelector.validateCellCssProperty(cssValidation)
+    I.wait(4)
 });
 
 
