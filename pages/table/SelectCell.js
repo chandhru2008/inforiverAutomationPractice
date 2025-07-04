@@ -2,6 +2,8 @@ const { I } = inject();
 
 const assert = require('assert')
 
+const hexa=require('../../utils/hexaToRgbConverterUtils');
+
 const tableRowSelector = {
     locators: {
         getRowByRegion: (region) =>
@@ -22,12 +24,16 @@ const tableRowSelector = {
         const rowFullId = await I.grabAttributeFrom(this.locators.getRowByRegion(cssValidation.regionName), 'id');
         const rowId = rowFullId.split('_')[0];
         const cellXPath = this.locators.cellXPath(rowId);
+
         const totalCells = await I.grabNumberOfVisibleElements(cellXPath);
-    
-        for (let i = 1; i <= totalCells; i++) {
+        console.log("totalCells",totalCells);
+
+        for (let i = 1; i <= totalCells; i++){
             const currentCell = `(${cellXPath})[${i}]`;
             const actualValue = await I.grabCssPropertyFrom(currentCell, cssValidation.property);
-            assert.strictEqual(actualValue, cssValidation.expectedValue, ` Mismatch in '${cssValidation.property}' at cell ${i}: Expected ${cssValidation.expectedValue}, Found ${actualValue}`);
+            console.log("actualValue",actualValue);
+            assert.equal(actualValue, hexa.hexToRgb(cssValidation.expectedValue), ` Mismatch in '${cssValidation.property}' at cell ${i}: Expected ${hexa.hexToRgb(cssValidation.expectedValue)}, Found ${actualValue}`);
+            console.log(actualValue,hexa.hexToRgb(cssValidation.expectedValue),cssValidation.property);
         }
     },
     
@@ -48,7 +54,6 @@ const tableRowSelector = {
     //         assert.ok(colorvalue === bgColor, "color is mismatching");
     //         console.log(color, region, colorvalue)
     //     }
-
     // }
 
 };
