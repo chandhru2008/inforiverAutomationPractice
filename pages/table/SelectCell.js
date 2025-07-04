@@ -2,7 +2,7 @@ const { I } = inject();
 
 const assert = require('assert')
 
-const hexa=require('../../utils/hexaToRgbConverterUtils');
+const hexa = require('../../utils/hexaToRgbConverterUtils');
 
 const tableRowSelector = {
     locators: {
@@ -26,18 +26,21 @@ const tableRowSelector = {
         const cellXPath = this.locators.cellXPath(rowId);
 
         const totalCells = await I.grabNumberOfVisibleElements(cellXPath);
-        console.log("totalCells",totalCells);
+        console.log("totalCells", totalCells);
 
-        for (let i = 1; i <= totalCells; i++){
-            const currentCell = `(${cellXPath})[${i}]`;
+        for (let i = 1; i <= totalCells; i++) {
+            let currentCell = `(${cellXPath})[${i}]`;
+            if (cssValidation.property == 'color') {
+                currentCell = `(${cellXPath})[${i}]//span`;
+            }
             const actualValue = await I.grabCssPropertyFrom(currentCell, cssValidation.property);
-            console.log("actualValue",actualValue);
+            console.log("actualValue", actualValue);
             assert.equal(actualValue, hexa.hexToRgb(cssValidation.expectedValue), ` Mismatch in '${cssValidation.property}' at cell ${i}: Expected ${hexa.hexToRgb(cssValidation.expectedValue)}, Found ${actualValue}`);
-            console.log(actualValue,hexa.hexToRgb(cssValidation.expectedValue),cssValidation.property);
+            console.log(actualValue, hexa.hexToRgb(cssValidation.expectedValue), cssValidation.property);
         }
     },
-    
-    
+
+
 
     // async validateTheColorApply(color, region, colorvalue) {
     //     const rowFullId = await I.grabAttributeFrom(this.locators.getRowByRegion(region), 'id');
