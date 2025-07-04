@@ -12,12 +12,12 @@ Scenario('Change bgcolor to user definded color', async ({ I }) => {
         regionName: region,
         expectedValue: fillColor
     };
-
     await I.amOnPage('/');
     await tableRowSelector.selectRow(region);
     await cellColorManager.applyColorToRow(fillColor);
     await tableRowSelector.validateCellCssProperty(cssValidation)
-    I.wait(4)
+    I.wait(4);
+    
 });
 
 
